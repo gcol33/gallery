@@ -1,0 +1,398 @@
+/* ========================================
+   gallery.gillescolling.com
+   "Field Notes" — a researcher's archive
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* --- Tokens --- */
+:root {
+  --bg:         #080808;
+  --bg-raised:  #111111;
+  --bg-hover:   #1a1a1a;
+  --text:       #c8c4bc;
+  --text-dim:   #706d65;
+  --text-bright:#e8e5de;
+  --accent:     #a39880;
+  --accent-dim: #6b6456;
+  --border:     #1e1d1b;
+  --serif:      'Cormorant Garamond', 'Georgia', serif;
+  --sans:       'DM Sans', 'Helvetica Neue', sans-serif;
+  --gap:        12px;
+  --radius:     2px;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* --- Reset --- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- Header --- */
+.site-header {
+  padding: 3rem 2rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.site-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.8rem;
+  color: var(--text-bright);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.site-subtitle {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --- Navigation / Filters --- */
+.filters {
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.3rem 0;
+  position: relative;
+  transition: color var(--transition);
+}
+
+.filter-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+
+.filter-btn:hover {
+  color: var(--text);
+}
+
+.filter-btn.active {
+  color: var(--text-bright);
+}
+
+.filter-btn.active::after {
+  transform: scaleX(1);
+}
+
+.filter-count {
+  font-size: 0.7rem;
+  color: var(--accent-dim);
+  margin-left: 0.3rem;
+}
+
+/* --- Gallery Grid --- */
+.gallery {
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  columns: 3;
+  column-gap: var(--gap);
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: var(--gap);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter var(--transition);
+  filter: brightness(0.92);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.02);
+  filter: brightness(1);
+}
+
+/* Caption overlay — appears on hover */
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1rem 0.8rem;
+  background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.gallery-item:hover .gallery-caption {
+  opacity: 1;
+}
+
+.gallery-caption-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--text-bright);
+  margin-bottom: 0.15rem;
+}
+
+.gallery-caption-meta {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* Placeholder images (remove when real photos added) */
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  color: var(--accent-dim);
+  letter-spacing: 0.05em;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+}
+
+/* Hide filtered items */
+.gallery-item.hidden {
+  display: none;
+}
+
+/* Fade-in animation */
+.gallery-item {
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger: set by JS via --delay custom property */
+.gallery-item {
+  animation-delay: var(--delay, 0s);
+}
+
+/* --- Lightbox --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4, 4, 4, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  backdrop-filter: blur(20px);
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(0.95);
+}
+
+.lightbox.open .lightbox-img {
+  transform: scale(1);
+}
+
+.lightbox-caption {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.lightbox-caption-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--text-bright);
+  margin-bottom: 0.2rem;
+}
+
+.lightbox-caption-meta {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color var(--transition);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.lightbox-close:hover {
+  color: var(--text-bright);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 1rem;
+  transition: color var(--transition);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+}
+
+.lightbox-nav:hover {
+  color: var(--text-bright);
+}
+
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+
+.lightbox-counter {
+  position: absolute;
+  top: 1.8rem;
+  left: 2rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  font-family: var(--sans);
+}
+
+/* --- Footer --- */
+.site-footer {
+  padding: 3rem 2rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.footer-name {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+}
+
+.footer-link {
+  font-size: 0.72rem;
+  color: var(--accent-dim);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color var(--transition);
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .gallery { columns: 2; }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    columns: 1;
+    padding: 0 1rem;
+  }
+
+  .site-header {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .site-title { font-size: 1.4rem; }
+
+  .filters {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .lightbox-nav { display: none; }
+
+  .site-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+  }
+}
