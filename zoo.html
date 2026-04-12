@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoo — Gilles Colling</title>
+  <meta name="description" content="Zoo photography by Gilles Colling.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Outfit:wght@200;300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Zoo: keep 3 columns, natural image heights */
+  </style>
+  <style>
+    /* ═══════════════════════════════════════
+       Zoo cylinder lightbox — vertical scroll
+       with darkened peek above/below
+       ═══════════════════════════════════════ */
+    .cylinder {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.97);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease);
+    }
+
+    .cylinder.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .cylinder-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      font-weight: 200;
+      z-index: 2;
+      line-height: 1;
+    }
+
+    .cylinder-close:hover { color: var(--text-bright); }
+
+    .cylinder-title {
+      position: absolute;
+      top: 1.8rem;
+      left: 2rem;
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .cylinder-counter {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      z-index: 2;
+    }
+
+    /* The scroll viewport */
+    .cylinder-track {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* All photos stacked vertically, translated by JS */
+    .cylinder-slides {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 1000px);
+      transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .cylinder-slide {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .cylinder-slide img {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Darkened peek gradients */
+    .cylinder-track::before,
+    .cylinder-track::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 30vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cylinder-track::before {
+      top: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    }
+
+    .cylinder-track::after {
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    }
+
+    /* Scroll hint arrows */
+    .cylinder-arrow {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: var(--text-dim);
+      opacity: 0.5;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .cylinder-arrow.up { top: 1.2rem; }
+    .cylinder-arrow.down { bottom: 3.5rem; }
+
+    .cylinder-arrow.hidden { opacity: 0; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a class="wordmark" href="/">Gilles Colling</a>
+    <div class="header-right">
+      <span class="header-project">Zoo</span>
+      <button class="view-toggle" id="viewToggle" aria-label="Toggle view">
+        <svg class="icon-grid" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="1" y="1" width="7" height="7"/><rect x="10" y="1" width="7" height="7"/>
+          <rect x="1" y="10" width="7" height="7"/><rect x="10" y="10" width="7" height="7"/>
+        </svg>
+        <svg class="icon-col" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="3" y="1" width="12" height="16"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="gallery" id="gallery">
+
+    <!-- Col 1 -->
+    <article class="gallery-item gallery-item" data-title="Baby Elephant" data-variants="photos/zoo/elephant/DSC05970.JPG,photos/zoo/elephant/DSC05980.JPG,photos/zoo/elephant/DSC05989.JPG">
+      <img src="photos/zoo/elephant/DSC05970.JPG" alt="Baby elephant sleeping" loading="lazy">
+      <figcaption class="col-caption">Baby Elephant</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Pelican" data-variants="photos/zoo/pelican/DSC06143.JPG,photos/zoo/pelican/DSC06142.JPG,photos/zoo/pelican/DSC06150.JPG">
+      <img src="photos/zoo/pelican/DSC06143.JPG" alt="Pelican resting" loading="lazy">
+      <figcaption class="col-caption">Pelican</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Emperor Tamarin" data-variants="photos/zoo/tamarin/DSC06065.JPG">
+      <img src="photos/zoo/tamarin/DSC06065.JPG" alt="Emperor tamarin with white mustache" loading="lazy">
+      <figcaption class="col-caption">Emperor Tamarin</figcaption>
+    </article>
+
+    <!-- Col 2 -->
+    <article class="gallery-item gallery-item" data-title="Ring-tailed Lemur" data-variants="photos/zoo/lemur/DSC05930.JPG,photos/zoo/lemur/DSC05929.JPG,photos/zoo/lemur/DSC05931.JPG">
+      <img src="photos/zoo/lemur/DSC05930.JPG" alt="Ring-tailed lemur portrait" loading="lazy">
+      <figcaption class="col-caption">Ring-tailed Lemur</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Crocodile" data-variants="photos/zoo/crocodile/DSC06245.JPG,photos/zoo/crocodile/DSC06246.JPG">
+      <img src="photos/zoo/crocodile/DSC06245.JPG" alt="Crocodile on shore" loading="lazy">
+      <figcaption class="col-caption">Crocodile</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Squirrel Monkey" data-variants="photos/zoo/squirrel-monkey/DSC06071.JPG,photos/zoo/squirrel-monkey/DSC06076.JPG,photos/zoo/squirrel-monkey/DSC06110.JPG">
+      <img src="photos/zoo/squirrel-monkey/DSC06071.JPG" alt="Squirrel monkey eating" loading="lazy">
+      <figcaption class="col-caption">Squirrel Monkey</figcaption>
+    </article>
+
+    <!-- Col 3 -->
+    <article class="gallery-item gallery-item" data-title="Saki Monkey" data-variants="photos/zoo/saki-monkey/DSC06050.JPG,photos/zoo/saki-monkey/DSC06057.JPG,photos/zoo/saki-monkey/DSC06061.JPG">
+      <img src="photos/zoo/saki-monkey/DSC06050.JPG" alt="Saki monkey close-up" loading="lazy">
+      <figcaption class="col-caption">Saki Monkey</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Red Panda" data-variants="photos/zoo/red-panda/DSC06113.JPG,photos/zoo/red-panda/DSC06112.JPG,photos/zoo/red-panda/DSC06115.JPG">
+      <img src="photos/zoo/red-panda/DSC06113.JPG" alt="Red panda peeking from behind tree" loading="lazy">
+      <figcaption class="col-caption">Red Panda</figcaption>
+    </article>
+
+    <article class="gallery-item gallery-item" data-title="Northern Bald Ibis" data-variants="photos/zoo/ibis/DSC05857.JPG,photos/zoo/ibis/DSC05863.JPG,photos/zoo/ibis/DSC05868.JPG">
+      <img src="photos/zoo/ibis/DSC05857.JPG" alt="Northern bald ibis by waterfall" loading="lazy">
+      <figcaption class="col-caption">Northern Bald Ibis</figcaption>
+    </article>
+
+  </main>
+
+  <!-- Cylinder lightbox -->
+  <div class="cylinder" id="cylinder">
+    <span class="cylinder-title" id="cylTitle"></span>
+    <button class="cylinder-close" aria-label="Close" onclick="closeCylinder()">&times;</button>
+
+    <svg class="cylinder-arrow up" id="arrowUp" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15l-6-6-6 6"/></svg>
+
+    <div class="cylinder-track" id="cylTrack">
+      <div class="cylinder-slides" id="cylSlides"></div>
+    </div>
+
+    <svg class="cylinder-arrow down" id="arrowDown" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+
+    <span class="cylinder-counter" id="cylCounter"></span>
+  </div>
+
+  <footer class="footer">
+    <span class="footer-text">&copy; Gilles Colling</span>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const items    = Array.from(document.querySelectorAll('.gallery-item'));
+      const toggle   = document.getElementById('viewToggle');
+
+      // --- View toggle ---
+      toggle.addEventListener('click', () => {
+        document.body.classList.toggle('view-col');
+        items.forEach(item => {
+          if (!item.classList.contains('visible')) observer.observe(item);
+        });
+      });
+
+      // --- Scroll reveal ---
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      items.forEach(item => observer.observe(item));
+
+      // --- Cylinder lightbox ---
+      const cylinder  = document.getElementById('cylinder');
+      const cylSlides = document.getElementById('cylSlides');
+      const cylTitle  = document.getElementById('cylTitle');
+      const cylCount  = document.getElementById('cylCounter');
+      const arrowUp   = document.getElementById('arrowUp');
+      const arrowDown = document.getElementById('arrowDown');
+
+      let variants = [];
+      let cylIndex = 0;
+      let isOpen = false;
+
+      function openCylinder(item) {
+        const srcs = item.dataset.variants.split(',');
+        variants = srcs;
+        cylIndex = 0;
+
+        cylTitle.textContent = item.dataset.title || '';
+
+        // Build slides
+        cylSlides.innerHTML = '';
+        srcs.forEach(src => {
+          const slide = document.createElement('div');
+          slide.className = 'cylinder-slide';
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = item.dataset.title || '';
+          slide.appendChild(img);
+          cylSlides.appendChild(slide);
+        });
+
+        updateCylinder();
+        cylinder.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        isOpen = true;
+      }
+
+      window.closeCylinder = function() {
+        cylinder.classList.remove('open');
+        document.body.style.overflow = '';
+        isOpen = false;
+      };
+
+      function updateCylinder() {
+        const offset = -cylIndex * 100;
+        cylSlides.style.top = offset + 'vh';
+
+        cylCount.textContent = variants.length > 1
+          ? `${cylIndex + 1} / ${variants.length}`
+          : '';
+
+        arrowUp.classList.toggle('hidden', cylIndex === 0);
+        arrowDown.classList.toggle('hidden', cylIndex === variants.length - 1);
+      }
+
+      function navigateCyl(dir) {
+        const next = cylIndex + dir;
+        if (next < 0 || next >= variants.length) return;
+        cylIndex = next;
+        updateCylinder();
+      }
+
+      // Click gallery items
+      items.forEach(item => {
+        item.addEventListener('click', () => openCylinder(item));
+      });
+
+      // Keyboard
+      document.addEventListener('keydown', e => {
+        if (!isOpen) return;
+        switch (e.key) {
+          case 'Escape':    closeCylinder(); break;
+          case 'ArrowUp':   navigateCyl(-1); e.preventDefault(); break;
+          case 'ArrowDown': navigateCyl(1);  e.preventDefault(); break;
+        }
+      });
+
+      // Mouse wheel
+      let wheelCooldown = false;
+      cylinder.addEventListener('wheel', e => {
+        if (!isOpen || wheelCooldown) return;
+        e.preventDefault();
+        const dir = e.deltaY > 0 ? 1 : -1;
+        navigateCyl(dir);
+        wheelCooldown = true;
+        setTimeout(() => wheelCooldown = false, 400);
+      }, { passive: false });
+
+      // Touch swipe (vertical)
+      let touchStartY = 0;
+      cylinder.addEventListener('touchstart', e => {
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      cylinder.addEventListener('touchend', e => {
+        const diff = touchStartY - e.changedTouches[0].screenY;
+        if (Math.abs(diff) > 50) navigateCyl(diff > 0 ? 1 : -1);
+      }, { passive: true });
+
+      // Click backdrop to close
+      cylinder.addEventListener('click', e => {
+        if (e.target === cylinder || e.target.id === 'cylTrack') closeCylinder();
+      });
+    });
+  </script>
+</body>
+</html>
