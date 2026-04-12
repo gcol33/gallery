@@ -3,80 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery — Gilles Colling</title>
-  <meta name="description" content="Animal and street photography by Gilles Colling.">
+  <title>Gilles Colling</title>
+  <meta name="description" content="Photography by Gilles Colling.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Outfit:wght@200;300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-landing">
 
-  <header class="header">
-    <a class="header-name" href="/">Gilles Colling</a>
-    <nav class="header-nav">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="comedy-wildlife">Comedy Wildlife</button>
-    </nav>
-  </header>
+  <section class="landing">
 
-  <main class="gallery">
-
-    <article class="gallery-item" data-category="comedy-wildlife"
-             data-title="Beetles on the Line" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/beetles_clothesline.jpg" alt="Beetles hanging from a clothesline" loading="lazy">
-    </article>
-
-    <article class="gallery-item" data-category="comedy-wildlife"
-             data-title="The Commuter" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/deer_commute.jpg" alt="Deer walking with pedestrians at a crosswalk" loading="lazy">
-    </article>
-
-    <article class="gallery-item" data-category="comedy-wildlife"
-             data-title="Peek" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/garden_eels_peek.jpg" alt="Garden eels peeking from the sand" loading="lazy">
-    </article>
-
-    <article class="gallery-item col-break" data-category="comedy-wildlife"
-             data-title="Open" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/heron_open_sign.jpg" alt="Heron standing under an Open sign" loading="lazy">
-    </article>
-
-    <article class="gallery-item" data-category="comedy-wildlife"
-             data-title="Poolside" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/mantis_lounger.jpg" alt="Praying mantis on a pool lounger" loading="lazy">
-    </article>
-
-    <article class="gallery-item col-break" data-category="comedy-wildlife"
-             data-title="Harbour Master" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/seagull_marina.jpg" alt="Seagull at a marina" loading="lazy">
-    </article>
-
-    <article class="gallery-item" data-category="comedy-wildlife"
-             data-title="Bottoms Up" data-meta="Comedy Wildlife">
-      <img src="photos/comedy-wildlife/swan_bottoms_up.jpg" alt="Swan diving head-first into a lake" loading="lazy">
-    </article>
-
-  </main>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <span class="lightbox-counter"></span>
-    <button class="lightbox-close" aria-label="Close">&times;</button>
-    <button class="lightbox-nav lightbox-prev" aria-label="Previous">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button class="lightbox-nav lightbox-next" aria-label="Next">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-    <img class="lightbox-img" src="" alt="">
-    <div class="lightbox-caption">
-      <div class="lightbox-caption-title"></div>
-      <div class="lightbox-caption-meta"></div>
+    <div class="landing-intro">
+      <h1 class="landing-name">Gilles Colling</h1>
+      <p class="landing-sub">Photography</p>
     </div>
-  </div>
+
+    <!-- Featured image — the strongest single shot -->
+    <a class="landing-feature" href="comedy-wildlife.html">
+      <img src="photos/comedy-wildlife/heron_open_sign.jpg" alt="Heron standing under an Open sign">
+    </a>
+
+    <!-- Project link -->
+    <a class="landing-project" href="comedy-wildlife.html">
+      <span class="landing-project-name">Comedy Wildlife</span>
+      <span class="landing-project-count">9 photographs</span>
+      <span class="landing-project-arrow">&rarr;</span>
+    </a>
+
+  </section>
 
   <footer class="footer">
-    <a class="footer-link" href="https://gillescolling.com">gillescolling.com</a>
+    <span class="footer-text">&copy; Gilles Colling</span>
   </footer>
 
-  <script src="gallery.js"></script>
 </body>
 </html>

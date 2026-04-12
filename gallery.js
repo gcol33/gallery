@@ -1,28 +1,36 @@
 /* ========================================
-   Gallery v3 — tight masonry, scroll
-   reveal, filtering, lightbox
+   Gallery v6 — grid/col toggle,
+   scroll reveal, lightbox
    ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   const items    = Array.from(document.querySelectorAll('.gallery-item'));
-  const filters  = document.querySelectorAll('.filter-btn');
   const lightbox = document.getElementById('lightbox');
   const lbImg    = lightbox.querySelector('.lightbox-img');
   const lbTitle  = lightbox.querySelector('.lightbox-caption-title');
-  const lbMeta   = lightbox.querySelector('.lightbox-caption-meta');
   const lbCount  = lightbox.querySelector('.lightbox-counter');
   const lbClose  = lightbox.querySelector('.lightbox-close');
   const lbPrev   = lightbox.querySelector('.lightbox-prev');
   const lbNext   = lightbox.querySelector('.lightbox-next');
+  const toggle   = document.getElementById('viewToggle');
 
   let currentIndex = 0;
-  let visibleItems = items;
+
+  // --- View toggle ---
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('view-col');
+    // Re-trigger scroll reveal for newly visible items
+    items.forEach(item => {
+      if (!item.classList.contains('visible')) {
+        observer.observe(item);
+      }
+    });
+  });
 
   // --- Scroll reveal ---
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        // Stagger slightly based on position in batch
         setTimeout(() => entry.target.classList.add('visible'), i * 80);
         observer.unobserve(entry.target);
       }
@@ -30,26 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   items.forEach(item => observer.observe(item));
-
-  // --- Filtering ---
-  function filterGallery(category) {
-    filters.forEach(btn =>
-      btn.classList.toggle('active', btn.dataset.filter === category)
-    );
-
-    let shown = [];
-    items.forEach(item => {
-      const match = category === 'all' || item.dataset.category === category;
-      item.classList.toggle('hidden', !match);
-      if (match) shown.push(item);
-    });
-
-    visibleItems = shown;
-  }
-
-  filters.forEach(btn => {
-    btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
-  });
 
   // --- Lightbox ---
   function openLightbox(index) {
@@ -65,27 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateLightbox() {
-    const item = visibleItems[currentIndex];
+    const item = items[currentIndex];
     const img  = item.querySelector('img');
-    const src  = img ? (img.dataset.full || img.src) : '';
-
-    lbImg.src   = src;
-    lbImg.alt   = img ? (img.alt || '') : '';
+    lbImg.src  = img.dataset.full || img.src;
+    lbImg.alt  = img.alt || '';
     lbTitle.textContent = item.dataset.title || '';
-    lbMeta.textContent  = item.dataset.meta  || '';
-    lbCount.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+    lbCount.textContent = `${currentIndex + 1} / ${items.length}`;
   }
 
   function navigate(dir) {
-    currentIndex = (currentIndex + dir + visibleItems.length) % visibleItems.length;
+    currentIndex = (currentIndex + dir + items.length) % items.length;
     updateLightbox();
   }
 
-  items.forEach(item => {
-    item.addEventListener('click', () => {
-      const idx = visibleItems.indexOf(item);
-      if (idx !== -1) openLightbox(idx);
-    });
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openLightbox(i));
   });
 
   lbClose.addEventListener('click', closeLightbox);
