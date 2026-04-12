@@ -118,6 +118,11 @@ body {
   line-height: 0;
 }
 
+/* Force column breaks to control which images land in which column */
+.gallery-item.col-break {
+  break-before: column;
+}
+
 .gallery-item img {
   display: block;
   width: 100%;
