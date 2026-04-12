@@ -9,137 +9,89 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <h1 class="site-title">Gallery</h1>
-    <p class="site-subtitle">Gilles Colling</p>
+  <header class="header">
+    <a class="header-name" href="/">Gilles Colling</a>
+    <nav class="header-nav">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="animals">Animals</button>
+      <button class="filter-btn" data-filter="street">Street</button>
+    </nav>
   </header>
-
-  <nav class="filters">
-    <button class="filter-btn active" data-filter="all">All<span class="filter-count">12</span></button>
-    <button class="filter-btn" data-filter="animals">Animals<span class="filter-count">6</span></button>
-    <button class="filter-btn" data-filter="street">Street<span class="filter-count">6</span></button>
-  </nav>
 
   <main class="gallery">
 
-    <!-- === ANIMALS === -->
-
     <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
-      <div class="placeholder" style="aspect-ratio: 3/4;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="street"
-             data-title="Untitled" data-meta="Street">
-      <div class="placeholder" style="aspect-ratio: 16/9;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
-      <div class="placeholder" style="aspect-ratio: 4/5;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="street"
-             data-title="Untitled" data-meta="Street">
-      <div class="placeholder" style="aspect-ratio: 1/1;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
-      <div class="placeholder" style="aspect-ratio: 16/10;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="street"
-             data-title="Untitled" data-meta="Street">
-      <div class="placeholder" style="aspect-ratio: 3/4;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
-      <div class="placeholder" style="aspect-ratio: 1/1;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="street"
-             data-title="Untitled" data-meta="Street">
-      <div class="placeholder" style="aspect-ratio: 4/3;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
-    </article>
-
-    <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
+             data-title="Untitled" data-meta="Animals">
       <div class="placeholder" style="aspect-ratio: 3/2;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
     </article>
 
     <article class="gallery-item" data-category="street"
              data-title="Untitled" data-meta="Street">
-      <div class="placeholder" style="aspect-ratio: 2/3;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
+      <div class="placeholder" style="aspect-ratio: 4/5;">photo</div>
     </article>
 
     <article class="gallery-item" data-category="animals"
-             data-title="Untitled" data-meta="Animal">
-      <div class="placeholder" style="aspect-ratio: 4/3;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Animal</div>
-      </div>
+             data-title="Untitled" data-meta="Animals">
+      <div class="placeholder" style="aspect-ratio: 1/1;">photo</div>
     </article>
 
     <article class="gallery-item" data-category="street"
              data-title="Untitled" data-meta="Street">
+      <div class="placeholder" style="aspect-ratio: 3/2;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="animals"
+             data-title="Untitled" data-meta="Animals">
+      <div class="placeholder" style="aspect-ratio: 4/5;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="street"
+             data-title="Untitled" data-meta="Street">
+      <div class="placeholder" style="aspect-ratio: 3/4;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="animals"
+             data-title="Untitled" data-meta="Animals">
       <div class="placeholder" style="aspect-ratio: 16/9;">photo</div>
-      <div class="gallery-caption">
-        <div class="gallery-caption-title">Untitled</div>
-        <div class="gallery-caption-meta">Street</div>
-      </div>
+    </article>
+
+    <article class="gallery-item" data-category="street"
+             data-title="Untitled" data-meta="Street">
+      <div class="placeholder" style="aspect-ratio: 1/1;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="animals"
+             data-title="Untitled" data-meta="Animals">
+      <div class="placeholder" style="aspect-ratio: 3/2;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="street"
+             data-title="Untitled" data-meta="Street">
+      <div class="placeholder" style="aspect-ratio: 4/5;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="animals"
+             data-title="Untitled" data-meta="Animals">
+      <div class="placeholder" style="aspect-ratio: 3/4;">photo</div>
+    </article>
+
+    <article class="gallery-item" data-category="street"
+             data-title="Untitled" data-meta="Street">
+      <div class="placeholder" style="aspect-ratio: 3/2;">photo</div>
     </article>
 
   </main>
 
   <!-- Lightbox -->
-  <div class="lightbox">
-    <span class="lightbox-counter">1 / 12</span>
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-counter"></span>
     <button class="lightbox-close" aria-label="Close">&times;</button>
-    <button class="lightbox-nav lightbox-prev" aria-label="Previous">&lsaquo;</button>
-    <button class="lightbox-nav lightbox-next" aria-label="Next">&rsaquo;</button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" aria-label="Next">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
     <img class="lightbox-img" src="" alt="">
     <div class="lightbox-caption">
       <div class="lightbox-caption-title"></div>
@@ -147,8 +99,7 @@
     </div>
   </div>
 
-  <footer class="site-footer">
-    <span class="footer-name">Gilles Colling</span>
+  <footer class="footer">
     <a class="footer-link" href="https://gillescolling.com">gillescolling.com</a>
   </footer>
 

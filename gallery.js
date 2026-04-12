@@ -1,11 +1,12 @@
 /* ========================================
-   Gallery — filtering, lightbox, stagger
+   Gallery v3 — tight masonry, scroll
+   reveal, filtering, lightbox
    ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   const items    = Array.from(document.querySelectorAll('.gallery-item'));
   const filters  = document.querySelectorAll('.filter-btn');
-  const lightbox = document.querySelector('.lightbox');
+  const lightbox = document.getElementById('lightbox');
   const lbImg    = lightbox.querySelector('.lightbox-img');
   const lbTitle  = lightbox.querySelector('.lightbox-caption-title');
   const lbMeta   = lightbox.querySelector('.lightbox-caption-meta');
@@ -14,29 +15,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const lbPrev   = lightbox.querySelector('.lightbox-prev');
   const lbNext   = lightbox.querySelector('.lightbox-next');
 
-  let currentFilter = 'all';
-  let currentIndex  = 0;
-  let visibleItems  = items;
+  let currentIndex = 0;
+  let visibleItems = items;
 
-  // --- Stagger animation on load ---
-  function staggerItems(itemList) {
-    itemList.forEach((item, i) => {
-      item.style.setProperty('--delay', `${i * 0.06}s`);
-      item.style.animation = 'none';
-      item.offsetHeight; // force reflow
-      item.style.animation = '';
+  // --- Scroll reveal ---
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger slightly based on position in batch
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
     });
-  }
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-  staggerItems(items);
+  items.forEach(item => observer.observe(item));
 
   // --- Filtering ---
   function filterGallery(category) {
-    currentFilter = category;
-
-    filters.forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.filter === category);
-    });
+    filters.forEach(btn =>
+      btn.classList.toggle('active', btn.dataset.filter === category)
+    );
 
     let shown = [];
     items.forEach(item => {
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     visibleItems = shown;
-    staggerItems(shown);
   }
 
   filters.forEach(btn => {
@@ -69,10 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateLightbox() {
     const item = visibleItems[currentIndex];
     const img  = item.querySelector('img');
-    const src  = img.dataset.full || img.src;
+    const src  = img ? (img.dataset.full || img.src) : '';
 
     lbImg.src   = src;
-    lbImg.alt   = img.alt || '';
+    lbImg.alt   = img ? (img.alt || '') : '';
     lbTitle.textContent = item.dataset.title || '';
     lbMeta.textContent  = item.dataset.meta  || '';
     lbCount.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
@@ -83,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLightbox();
   }
 
-  // Click handlers
   items.forEach(item => {
     item.addEventListener('click', () => {
       const idx = visibleItems.indexOf(item);
@@ -99,28 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === lightbox) closeLightbox();
   });
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('open')) return;
-
     switch (e.key) {
-      case 'Escape':     closeLightbox();  break;
-      case 'ArrowLeft':  navigate(-1);     break;
-      case 'ArrowRight': navigate(1);      break;
+      case 'Escape':     closeLightbox(); break;
+      case 'ArrowLeft':  navigate(-1);    break;
+      case 'ArrowRight': navigate(1);     break;
     }
   });
 
-  // Swipe support for mobile
   let touchStartX = 0;
-
   lightbox.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
   }, { passive: true });
 
   lightbox.addEventListener('touchend', (e) => {
     const diff = e.changedTouches[0].screenX - touchStartX;
-    if (Math.abs(diff) > 50) {
-      navigate(diff > 0 ? -1 : 1);
-    }
+    if (Math.abs(diff) > 50) navigate(diff > 0 ? -1 : 1);
   }, { passive: true });
 });
