@@ -436,7 +436,7 @@ body.view-col .gallery-item:hover .col-caption {
 }
 
 .footer-text {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   letter-spacing: 0.12em;
   font-weight: 200;
