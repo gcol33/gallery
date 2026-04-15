@@ -184,7 +184,7 @@
 <body>
 
   <header class="header">
-    <a class="wordmark" href="hub.html">Gilles Colling</a>
+    <a class="wordmark" href="hub.html">Gilles Colling<span class="wordmark-sub">All Photographs</span></a>
     <div class="header-right">
       <nav class="header-nav">
         <a class="header-project" href="comedy-wildlife.html">Comedy Wildlife</a>
@@ -207,49 +207,49 @@
 
     <!-- Col 1 -->
     <article class="gallery-item gallery-item" data-title="Baby Elephant" data-variants="photos/zoo/elephant/DSC05970.JPG,photos/zoo/elephant/DSC05980.JPG,photos/zoo/elephant/DSC05989.JPG">
-      <img src="photos/zoo/elephant/DSC05970.JPG" alt="Baby elephant sleeping" loading="lazy">
+      <img src="photos/zoo/elephant/DSC05970_sm.JPG" alt="Baby elephant sleeping" loading="eager" fetchpriority="high" decoding="async">
       <figcaption class="col-caption">Baby Elephant</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Pelican" data-variants="photos/zoo/pelican/DSC06143.JPG,photos/zoo/pelican/DSC06142.JPG,photos/zoo/pelican/DSC06150.JPG">
-      <img src="photos/zoo/pelican/DSC06143.JPG" alt="Pelican resting" loading="lazy">
+      <img src="photos/zoo/pelican/DSC06143_sm.JPG" alt="Pelican resting" loading="lazy">
       <figcaption class="col-caption">Pelican</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Emperor Tamarin" data-variants="photos/zoo/tamarin/DSC06065.JPG">
-      <img src="photos/zoo/tamarin/DSC06065.JPG" alt="Emperor tamarin with white mustache" loading="lazy">
+      <img src="photos/zoo/tamarin/DSC06065_sm.JPG" alt="Emperor tamarin with white mustache" loading="lazy">
       <figcaption class="col-caption">Emperor Tamarin</figcaption>
     </article>
 
     <!-- Col 2 -->
     <article class="gallery-item gallery-item" data-title="Ring-tailed Lemur" data-variants="photos/zoo/lemur/DSC05930.JPG,photos/zoo/lemur/DSC05929.JPG,photos/zoo/lemur/DSC05931.JPG">
-      <img src="photos/zoo/lemur/DSC05930.JPG" alt="Ring-tailed lemur portrait" loading="lazy">
+      <img src="photos/zoo/lemur/DSC05930_sm.JPG" alt="Ring-tailed lemur portrait" loading="eager" fetchpriority="high" decoding="async">
       <figcaption class="col-caption">Ring-tailed Lemur</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Crocodile" data-variants="photos/zoo/crocodile/DSC06245.JPG,photos/zoo/crocodile/DSC06246.JPG">
-      <img src="photos/zoo/crocodile/DSC06245.JPG" alt="Crocodile on shore" loading="lazy">
+      <img src="photos/zoo/crocodile/DSC06245_sm.JPG" alt="Crocodile on shore" loading="lazy">
       <figcaption class="col-caption">Crocodile</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Squirrel Monkey" data-variants="photos/zoo/squirrel-monkey/DSC06071.JPG,photos/zoo/squirrel-monkey/DSC06076.JPG,photos/zoo/squirrel-monkey/DSC06110.JPG">
-      <img src="photos/zoo/squirrel-monkey/DSC06071.JPG" alt="Squirrel monkey eating" loading="lazy">
+      <img src="photos/zoo/squirrel-monkey/DSC06071_sm.JPG" alt="Squirrel monkey eating" loading="lazy">
       <figcaption class="col-caption">Squirrel Monkey</figcaption>
     </article>
 
     <!-- Col 3 -->
     <article class="gallery-item gallery-item" data-title="Saki Monkey" data-variants="photos/zoo/saki-monkey/DSC06050.JPG,photos/zoo/saki-monkey/DSC06057.JPG,photos/zoo/saki-monkey/DSC06061.JPG">
-      <img src="photos/zoo/saki-monkey/DSC06050.JPG" alt="Saki monkey close-up" loading="lazy">
+      <img src="photos/zoo/saki-monkey/DSC06050_sm.JPG" alt="Saki monkey close-up" loading="eager" fetchpriority="high" decoding="async">
       <figcaption class="col-caption">Saki Monkey</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Red Panda" data-variants="photos/zoo/red-panda/DSC06113.JPG,photos/zoo/red-panda/DSC06112.JPG,photos/zoo/red-panda/DSC06115.JPG">
-      <img src="photos/zoo/red-panda/DSC06113.JPG" alt="Red panda peeking from behind tree" loading="lazy">
+      <img src="photos/zoo/red-panda/DSC06113_sm.JPG" alt="Red panda peeking from behind tree" loading="lazy">
       <figcaption class="col-caption">Red Panda</figcaption>
     </article>
 
     <article class="gallery-item gallery-item" data-title="Northern Bald Ibis" data-variants="photos/zoo/ibis/DSC05857.JPG,photos/zoo/ibis/DSC05863.JPG,photos/zoo/ibis/DSC05868.JPG">
-      <img src="photos/zoo/ibis/DSC05857.JPG" alt="Northern bald ibis by waterfall" loading="lazy">
+      <img src="photos/zoo/ibis/DSC05857_sm.JPG" alt="Northern bald ibis by waterfall" loading="lazy">
       <figcaption class="col-caption">Northern Bald Ibis</figcaption>
     </article>
 
@@ -364,6 +364,10 @@
         cylinder.classList.add('open');
         document.body.style.overflow = 'hidden';
         isOpen = true;
+
+        // Prefetch neighboring animals for instant left/right navigation
+        prefetchItem(items[itemIndex - 1]);
+        prefetchItem(items[itemIndex + 1]);
       }
 
       window.closeCylinder = function() {
@@ -397,10 +401,30 @@
         openCylinder(items[next]);
       }
 
-      // Click gallery items
+      // --- Predictive prefetch (full-res) ---
+      const prefetched = new Set();
+      function prefetch(src) {
+        if (!src || prefetched.has(src)) return;
+        prefetched.add(src);
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = src;
+      }
+      function prefetchItem(item) {
+        if (!item) return;
+        item.dataset.variants.split(',').forEach(prefetch);
+      }
+
+      // Click + hover/touch gallery items
       items.forEach(item => {
         item.addEventListener('click', () => openCylinder(item));
+        item.addEventListener('mouseenter', () => prefetchItem(item), { passive: true });
+        item.addEventListener('touchstart',  () => prefetchItem(item), { passive: true });
       });
+
+      // Idle-prefetch first variant of every animal so lightbox opens instantly
+      const idle = window.requestIdleCallback || (cb => setTimeout(cb, 800));
+      idle(() => items.forEach(it => prefetch(it.dataset.variants.split(',')[0])));
 
       // Keyboard
       document.addEventListener('keydown', e => {
