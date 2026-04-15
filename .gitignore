@@ -1,0 +1,6 @@
+photos/raw/
+scripts/
+__pycache__/
+*.pyc
+.DS_Store
+*_side_by_side.html
