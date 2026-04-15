@@ -150,6 +150,22 @@ body:not(.view-col) .icon-col { display: block; }
 body:not(.view-col) .icon-grid { display: none; }
 
 
+/* 2-column layout for sparse galleries (e.g. Birds with 2 subjects) */
+.gallery-pair {
+  columns: 2;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Birds page: masonry with cropped square covers (+ one 1:2 tall) — clean bottom */
+.page-birds .gallery {
+  padding: 2rem clamp(1.5rem, 4vw, 3rem) 3rem;
+  column-gap: 1.25rem;
+}
+.page-birds .gallery-item {
+  margin-bottom: 1.25rem;
+}
+
 /* ===== GALLERY — CSS COLUMNS MASONRY ===== */
 /*
   Image order in HTML is column-first (CSS columns fill top-to-bottom):
